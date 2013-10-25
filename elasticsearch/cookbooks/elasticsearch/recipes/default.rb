@@ -16,6 +16,14 @@ package "elasticsearch" do
     provider Chef::Provider::Package::Rpm
 end
 
+cookbook_file "/etc/elasticsearch/mapping_ja.txt" do
+    mode 00644
+end
+
+cookbook_file "/etc/elasticsearch/stopwords_ja.txt" do
+    mode 00644
+end
+
 service "elasticsearch" do
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => true

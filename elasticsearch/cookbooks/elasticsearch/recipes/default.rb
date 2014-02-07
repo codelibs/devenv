@@ -1,4 +1,4 @@
-filename = "elasticsearch-1.0.0.RC1.noarch.rpm"
+filename = "elasticsearch-1.0.0.RC2.noarch.rpm"
 remote_uri = "https://download.elasticsearch.org/elasticsearch/elasticsearch/#{filename}"
 
 remote_file "/tmp/#{filename}" do
@@ -24,7 +24,23 @@ cookbook_file "/etc/elasticsearch/stopwords_ja.txt" do
     mode 00644
 end
 
+bash "update_es_yml" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+  cat /etc/elasticsearch/elasticsearch.yml | grep -v cluster.name | grep -v node.name | grep -v index.number_of_shards | grep -v index.number_of_replicas > /tmp/elasticsearch.yml.tmp
+  echo "cluster.name: elasticsearch-codelibs" >> /tmp/elasticsearch.yml.tmp
+  echo "node.name: \"ES Node 1\"" >> /tmp/elasticsearch.yml.tmp
+  echo "index.number_of_shards: 1" >> /tmp/elasticsearch.yml.tmp
+  echo "index.number_of_replicas: 0" >> /tmp/elasticsearch.yml.tmp
+  mv -f /tmp/elasticsearch.yml.tmp /etc/elasticsearch/elasticsearch.yml
+  sed -e "s/es.logger.level: INFO/es.logger.level: DEBUG/" /etc/elasticsearch/logging.yml > /tmp/logging.yml.tmp
+  mv -f /tmp/logging.yml.tmp /etc/elasticsearch/logging.yml
+  EOH
+end
+
 service "elasticsearch" do
     action [:enable, :start]
     supports :status => true, :restart => true, :reload => true
 end
+

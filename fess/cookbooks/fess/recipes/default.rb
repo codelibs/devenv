@@ -1,8 +1,8 @@
-version = '9.0.2'
-#version = '9.0.0-1'
-db = 'h2'
-#db = 'mysql'
-filename = "fess-server-#{db}-#{version}.noarch.rpm"
+#version = '9.1.0-SNAPSHOT'
+version = '9.0.2-1'
+#db_name = 'h2'
+db_name = 'mysql'
+filename = "fess-server-#{db_name}-#{version}.noarch.rpm"
 remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
 mysql_config = "/root/fess_mysql_config"
 
@@ -32,6 +32,6 @@ bash "mysql_config" do
   echo "MYSQL_PASSWORD=mysqldb" >> #{mysql_config}
   bash /opt/fess/extension/mysql/install.sh #{mysql_config}
   EOH
-  not_if { ::File.exists?(mysql_config) }
+  only_if { db_name == 'mysql' && ! ::File.exists?(mysql_config) }
 end
 

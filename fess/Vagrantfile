@@ -114,6 +114,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         }
       },
       :mysql => {
+        "bind_address" => "127.0.0.1",
         "server_root_password" => "mysqldb",
         "server_repl_password" => "mysqldb",
         "server_debian_password" => "mysqldb"

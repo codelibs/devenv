@@ -101,6 +101,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
     chef.add_recipe "java"
+    chef.add_recipe "build-essential"
+    chef.add_recipe "openssl"
+    chef.add_recipe "mysql::server"
     chef.add_recipe "fess"
     chef.json = {
       :java => {
@@ -109,6 +112,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         :oracle => {
           "accept_oracle_download_terms" => true
         }
+      },
+      :mysql => {
+        "server_root_password" => "mysqldb",
+        "server_repl_password" => "mysqldb",
+        "server_debian_password" => "mysqldb"
       }
     }
   end

@@ -1,6 +1,10 @@
 filename = "elasticsearch-1.0.2.noarch.rpm"
 remote_uri = "https://download.elasticsearch.org/elasticsearch/elasticsearch/#{filename}"
 
+service "elasticsearch" do
+    supports :status => true, :restart => true, :reload => true
+end
+
 remote_file "/tmp/#{filename}" do
     source "#{remote_uri}"
     mode 00644
@@ -37,10 +41,6 @@ bash "update_es_yml" do
   sed -e "s/es.logger.level: INFO/es.logger.level: DEBUG/" /etc/elasticsearch/logging.yml > /tmp/logging.yml.tmp
   mv -f /tmp/logging.yml.tmp /etc/elasticsearch/logging.yml
   EOH
-end
-
-service "elasticsearch" do
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
+  notifies :restart, resources(:service => "elasticsearch")
 end
 

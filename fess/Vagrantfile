@@ -53,7 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   vb.gui = true
   #
     # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
   #
   # View the documentation for the provider you're using for more
@@ -101,14 +101,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision :chef_solo do |chef|
     chef.cookbooks_path = "cookbooks"
     chef.add_recipe "java"
-    chef.add_recipe "build-essential"
-    chef.add_recipe "openssl"
     chef.add_recipe "mysql::server"
     chef.add_recipe "fess"
     chef.json = {
       :java => {
         :install_flavor => "oracle",
-        :jdk_version => 7,
+        :jdk_version => 8,
         :oracle => {
           "accept_oracle_download_terms" => true
         }

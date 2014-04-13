@@ -17,17 +17,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+unless node.recipe?('java::default')
+  Chef::Log.warn("Using java::default instead is recommended.")
+
+# Even if this recipe is included by itself, a safety check is nice...
+  if node['java']['java_home'].nil? or node['java']['java_home'].empty?
+    include_recipe "java::set_attributes_from_version"
+  end
+end
 
 java_home = node['java']["java_home"]
 arch = node['java']['arch']
-jdk_version = node['java']['jdk_version']
 
-#convert version number to a string if it isn't already
-if jdk_version.instance_of? Fixnum
-  jdk_version = jdk_version.to_s
-end
-
-case jdk_version
+case node['java']['jdk_version'].to_s
 when "6"
   tarball_url = node['java']['jdk']['6'][arch]['url']
   tarball_checksum = node['java']['jdk']['6'][arch]['checksum']
@@ -36,6 +38,10 @@ when "7"
   tarball_url = node['java']['jdk']['7'][arch]['url']
   tarball_checksum = node['java']['jdk']['7'][arch]['checksum']
   bin_cmds = node['java']['jdk']['7']['bin_cmds']
+when "8"
+  tarball_url = node['java']['jdk']['8'][arch]['url']
+  tarball_checksum = node['java']['jdk']['8'][arch]['checksum']
+  bin_cmds = node['java']['jdk']['8']['bin_cmds']
 end
 
 if tarball_url =~ /example.com/
@@ -46,6 +52,7 @@ include_recipe "java::set_java_home"
 
 java_ark "jdk" do
   url tarball_url
+  default node['java']['set_default']
   checksum tarball_checksum
   app_home java_home
   bin_cmds bin_cmds
@@ -53,3 +60,6 @@ java_ark "jdk" do
   action :install
 end
 
+if node['java']['set_default'] and platform_family?('debian')
+  include_recipe 'java::default_java_symlink'
+end

@@ -3,6 +3,45 @@ mysql Cookbook CHANGELOG
 This file is used to list changes made in each version of the mysql cookbook.
 
 
+v5.0.2 (2014-04-01)
+-------------------
+- Moving server_deprecated into recipes directory
+
+
+v5.0.0 (2014-03-31)
+-------------------
+- Rewriting as a library cookbook
+- Exposing mysql_service and mysql_client resources
+- User now needs to supply configuration
+- Moving attribute driven recipe to server-deprecated
+
+
+v4.1.2 (2014-02-28)
+-------------------
+- [COOK-4349] - Fix invalid platform check
+- [COOK-4184] - Better handling of Ubuntu upstart service
+- [COOK-2100] - Changing innodb_log_file_size tunable results in inability to start MySQL
+
+
+v4.1.1 (2014-02-25)
+-------------------
+- **[COOK-2966] - Address foodcritic failures'
+- **[COOK-4182] - Template parse failure in /etc/init/mysql.conf (data_dir)'
+- **[COOK-4198] - Added missing tunable'
+- **[COOK-4206] - create root@127.0.0.1, as well as root@localhost'
+
+
+v4.0.20 (2014-01-18)
+--------------------
+* [COOK-3931] - MySQL Server Recipe Regression for Non-LTS Ubuntu Versions
+* [COOK-3945] - MySQL cookbook fails on Ubuntu 13.04/13.10
+* [COOK-3966] - mysql::server recipe can't find a template with debian 7.x
+* [COOK-3985] - Missing /etc/mysql/debian.cnf template on mysql::_server_debian.rb recipe (mysql 4.0.4)
+* [COOK-3974] - debian.cnf not updated
+* [COOK-4001] - Pull request: Fixes for broken mysql::server on Debian
+* [COOK-4071] - Mysql cookbook doesn't work on debian 7.2
+
+
 v4.0.14
 -------
 Fixing style cops

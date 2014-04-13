@@ -6,6 +6,11 @@ filename = "fess-server-#{db_name}-#{version}.noarch.rpm"
 remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
 mysql_config = "/root/fess_mysql_config"
 
+service "fess" do
+    supports :status => true, :restart => true, :reload => true
+end
+
+
 remote_file "/tmp/#{filename}" do
     source "#{remote_uri}"
     mode 00644
@@ -16,11 +21,8 @@ package "fess" do
     source "/tmp/#{filename}"
     options "--nodeps"
     provider Chef::Provider::Package::Rpm
-end
-
-service "fess" do
-    action [:enable, :start]
-    supports :status => true, :restart => true, :reload => true
+    notifies :restart, resources(:service => "fess")
+    notifies :enable, resources(:service => "fess")
 end
 
 bash "mysql_config" do

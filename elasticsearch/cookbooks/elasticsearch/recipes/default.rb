@@ -28,6 +28,10 @@ cookbook_file "/etc/elasticsearch/stopwords_ja.txt" do
     mode 00644
 end
 
+cookbook_file "/etc/elasticsearch/userdict_ja.txt" do
+    mode 00644
+end
+
 bash "update_es_yml" do
   user "root"
   cwd "/tmp"

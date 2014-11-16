@@ -34,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         }
       },
       :mysql => {
-        "enable_utf8" => true,
+        "enable_utf8" => "true",
         "bind_address" => "127.0.0.1",
         "server_root_password" => "mysqldb",
         "server_repl_password" => "mysqldb",

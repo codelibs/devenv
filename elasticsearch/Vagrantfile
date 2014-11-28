@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "../data/elasticsearch/plugins", "/usr/share/elasticsearch/plugins", :mount_options => [ "dmode=777", "fmode=777" ]
 
   config.vm.provider :virtualbox do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
 
   config.omnibus.chef_version = :latest

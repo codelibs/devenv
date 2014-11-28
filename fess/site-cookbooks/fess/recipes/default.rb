@@ -1,5 +1,5 @@
 #version = '9.3.0-SNAPSHOT'
-version = '9.3.0-1'
+version = '9.3.1-1.el6'
 #db_name = 'h2'
 db_name = 'mysql'
 filename = "fess-server-#{db_name}-#{version}.noarch.rpm"

@@ -1,5 +1,4 @@
-filename = "elasticsearch-1.4.2.noarch.rpm"
-#filename = "elasticsearch-1.3.5.noarch.rpm"
+filename = "elasticsearch-1.4.4.noarch.rpm"
 remote_uri = "https://download.elasticsearch.org/elasticsearch/elasticsearch/#{filename}"
 
 service "elasticsearch" do

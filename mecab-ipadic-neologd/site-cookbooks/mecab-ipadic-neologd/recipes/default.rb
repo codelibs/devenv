@@ -155,7 +155,7 @@ bash "kuromoji-build" do
   rm -rf src/ build.xml
   svn update
 
-  cp -Rp $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-* $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji
+  cp -r $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-* $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji
 
   IPADIC_VERSION=`basename $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-*`
 

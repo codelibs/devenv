@@ -155,7 +155,9 @@ bash "kuromoji-build" do
   rm -rf src/ build.xml
   svn update
 
-  cp -r $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-* $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji
+  mkdir -p $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji
+  DICT_DIR=`ls -d $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-*`
+  cp -r $DICT_DIR $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji
 
   IPADIC_VERSION=`basename $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-*`
 
@@ -168,7 +170,9 @@ bash "kuromoji-build" do
   mv src/resources/org/apache src/resources/org/codelibs
 
   ant regenerate
+  if [ $? != 0 ] ; then exit 1;fi
   ant jar-core
+  if [ $? != 0 ] ; then exit 1;fi
 
   touch #{kuromoji_process_file}
   EOH

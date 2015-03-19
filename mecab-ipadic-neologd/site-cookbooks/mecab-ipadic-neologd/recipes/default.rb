@@ -165,9 +165,10 @@ bash "kuromoji-build" do
   sed -i "s/euc-jp/utf-8/g" build.xml
   sed -i "s/, download-dict//g" build.xml
   sed -i "s/1g/2g/g" build.xml
-  sed -i "s/org\\/apache\\/lucene\\/analysis\\/ja/org\\/codelibs\\/lucene\\/analysis\\/ja/g" build.xml
-  perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.lucene.analysis.ja/g" `find . -type f | grep -v /\.svn/`
-  mv src/resources/org/apache src/resources/org/codelibs
+  sed -i "s/org\\/apache\\/lucene\\/analysis\\/ja/org\\/codelibs\\/neologd\\/lucene\\/analysis\\/ja/g" build.xml
+  perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.lucene.analysis.ja/g" `find . -type f | grep -v /\.svn/`
+  mkdir src/resources/org/codelibs
+  mv src/resources/org/apache src/resources/org/codelibs/neologd
 
   ant regenerate
   if [ $? != 0 ] ; then exit 1;fi

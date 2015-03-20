@@ -165,10 +165,10 @@ bash "kuromoji-build" do
   sed -i "s/euc-jp/utf-8/g" build.xml
   sed -i "s/, download-dict//g" build.xml
   sed -i "s/1g/2g/g" build.xml
-  sed -i "s/org\\/apache\\/lucene\\/analysis\\/ja/org\\/codelibs\\/neologd\\/lucene\\/analysis\\/ja/g" build.xml
-  perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.lucene.analysis.ja/g" `find . -type f | grep -v /\.svn/`
-  mkdir src/resources/org/codelibs
-  mv src/resources/org/apache src/resources/org/codelibs/neologd
+  sed -i "s/org\\/apache\\/lucene\\/analysis\\/ja/org\\/codelibs\\/neologd\\/ipadic\\/lucene\\/analysis\\/ja/g" build.xml
+  perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.ipadic.lucene.analysis.ja/g" `find . -type f | grep -v /\.svn/`
+  mkdir -p src/resources/org/codelibs/neologd
+  mv src/resources/org/apache src/resources/org/codelibs/neologd/ipadic
 
   ant regenerate
   if [ $? != 0 ] ; then exit 1;fi
@@ -189,7 +189,7 @@ bash "kuromoji-deploy" do
   export LUCENE_SRC_HOME=`pwd`/lucene_solr_#{lucene_version}
 
   NEOLOGD_VERSION=`echo $NEOLOGD_HOME/seed/mecab-user-dict-seed.*.csv.xz | sed -e "s/.*seed\\.//" -e "s/.csv.xz//"`
-  NEOLOGD_LUCENE_JAR=`basename $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar |sed -e "s/-SNAPSHOT//" -e "s/\\.jar/-${NEOLOGD_VERSION}.jar/" -e "s/analyzers-kuromoji/analyzers-kuromoji-neologd/"`
+  NEOLOGD_LUCENE_JAR=`basename $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar |sed -e "s/-SNAPSHOT//" -e "s/\\.jar/-${NEOLOGD_VERSION}.jar/" -e "s/analyzers-kuromoji/analyzers-kuromoji-ipadic-neologd/"`
   cp $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar /opt/mecab-ipadic-neologd/$NEOLOGD_LUCENE_JAR
   EOH
 end

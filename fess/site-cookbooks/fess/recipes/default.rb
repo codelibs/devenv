@@ -1,4 +1,4 @@
-version = '9.3.4-SNAPSHOT'
+version = '9.4.0-SNAPSHOT'
 #version = '9.3.3-1'
 #db_name = 'h2'
 db_name = 'mysql'

@@ -26,6 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.add_recipe "java"
     chef.add_recipe "mysql::server"
     chef.add_recipe "fess"
+    chef.add_recipe "testdata"
     chef.json = {
       :java => {
         :install_flavor => "oracle",

@@ -1,9 +1,9 @@
-version = '9.4.0-SNAPSHOT'
-#version = '9.3.3-1'
+version = '9.4.3-SNAPSHOT'
+#version = '9.4.2-1'
 #db_name = 'h2'
 db_name = 'mysql'
-os_name = 'el6'
-#os_name = 'el7'
+#os_name = 'el6'
+os_name = 'el7'
 filename = "fess-server-#{db_name}-#{version}.#{os_name}.noarch.rpm"
 remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
 mysql_config = "/root/fess_mysql_config"

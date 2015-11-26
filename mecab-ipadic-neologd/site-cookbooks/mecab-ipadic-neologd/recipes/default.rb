@@ -1,6 +1,6 @@
-ant_version = "1.9.5"
+ant_version = "1.9.6"
 ant_file = "apache-ant-#{ant_version}-bin.tar.gz"
-ant_url = "http://ftp.kddilabs.jp/infosystems/apache//ant/binaries/#{ant_file}"
+ant_url = "http://ftp.kddilabs.jp/infosystems/apache/ant/binaries/#{ant_file}"
 mecab_version = "0.994"
 mecab_file = "mecab-#{mecab_version}.tar.gz"
 mecab_url = "http://mecab.googlecode.com/files/#{mecab_file}"

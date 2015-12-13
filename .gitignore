@@ -1,5 +1,4 @@
-/data/elasticsearch/logs/*
-/data/elasticsearch/plugins/*
-/elasticsearch/.vagrant/
-/data/fess/logs/*
-/fess/.vagrant/
+/data/*/plugins/*
+/data/*/logs/*
+/*/.vagrant/
+/*/Berksfile.lock

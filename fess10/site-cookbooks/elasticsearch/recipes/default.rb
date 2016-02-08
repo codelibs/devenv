@@ -1,4 +1,4 @@
-es_version = "2.1.1"
+es_version = "2.1.2"
 filename = "elasticsearch-#{es_version}.rpm"
 remote_uri = "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/#{es_version}/#{filename}"
 

@@ -111,6 +111,17 @@ bash "neologd-build" do
   rm -rf mecab-ipadic-neologd
   git clone #{neologd_git_url}
   cd mecab-ipadic-neologd
+
+  export SEED_XZ_FILE=`ls ./seed/mecab-user-dict-seed.*`
+  export SEED_CSV_FILE=`echo $SEED_XZ_FILE | sed -e 's/.xz$//'`
+  xz -cd $SEED_XZ_FILE \
+    | grep -v "^警備員,.*,アンチスキル.*" \
+    | grep -v "^風紀委員,.*,ジャッジメント.*" \
+    | grep -v "^一方通行,.*,アクセラレータ.*" \
+    > $SEED_CSV_FILE
+  rm $SEED_XZ_FILE
+  xz $SEED_CSV_FILE
+
   ./bin/install-mecab-ipadic-neologd -y -n --max_baseform_length #{max_baseform_length}
 
   touch #{neologd_process_file}

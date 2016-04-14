@@ -8,9 +8,8 @@ ipadic_version = "2.7.0-20070801"
 ipadic_file = "mecab-ipadic-#{ipadic_version}.tar.gz"
 ipadic_url = "http://mecab.googlecode.com/files/#{ipadic_file}"
 neologd_git_url = "https://github.com/neologd/mecab-ipadic-neologd.git"
-lucene_version = "4_10_4"
-# lucene_version = "5_2_1"
-lucene_svn_url = "http://svn.apache.org/repos/asf/lucene/dev/tags/lucene_solr_#{lucene_version}"
+lucene_version = "5.5.0"
+lucene_git_url = "https://github.com/apache/lucene-solr.git"
 resource_process_file = "/tmp/resouce_process.txt"
 mecab_process_file = "/tmp/mecab_process.txt"
 ipadic_process_file = "/tmp/ipadic_process.txt"
@@ -134,13 +133,15 @@ bash "lucene-build" do
   cwd "/home/vagrant"
   code <<-EOH
   export ANT_HOME=`pwd`/apache-ant-#{ant_version}
-  export LUCENE_SRC_HOME=`pwd`/lucene_solr_#{lucene_version}
+  export LUCENE_SRC_HOME=`pwd`/lucene-solr
 
   export PATH=$ANT_HOME/bin:$PATH
 
   rm -rf $LUCENE_SRC_HOME
-  svn co #{lucene_svn_url}
-  cd $LUCENE_SRC_HOME/lucene
+  git clone #{lucene_git_url}
+  cd $LUCENE_SRC_HOME
+  git checkout -b #{lucene_version} refs/tags/releases/lucene-solr/#{lucene_version}
+  cd lucene
   ant ivy-bootstrap
   ant compile
 
@@ -157,7 +158,7 @@ bash "kuromoji-build" do
   export ANT_HOME=`pwd`/apache-ant-#{ant_version}
   export MECAB_HOME=`pwd`/mecab_home
   export NEOLOGD_HOME=`pwd`/mecab-ipadic-neologd
-  export LUCENE_SRC_HOME=`pwd`/lucene_solr_#{lucene_version}
+  export LUCENE_SRC_HOME=`pwd`/lucene-solr
 
   export PATH=$ANT_HOME/bin:$PATH
   export PATH=$MECAB_HOME/bin:$PATH
@@ -165,7 +166,7 @@ bash "kuromoji-build" do
   cd $LUCENE_SRC_HOME/lucene/analysis/kuromoji
   ant clean
   rm -rf src/ build.xml
-  svn update
+  git checkout -- .
 
   mkdir -p $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji
   DICT_DIR=`ls -d $NEOLOGD_HOME/build/mecab-ipadic-*-neologd-*`
@@ -178,7 +179,7 @@ bash "kuromoji-build" do
   sed -i "s/, download-dict//g" build.xml
   sed -i "s/1g/4g/g" build.xml
   sed -i "s/org\\/apache\\/lucene\\/analysis\\/ja/org\\/codelibs\\/neologd\\/ipadic\\/lucene\\/analysis\\/ja/g" build.xml
-  perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.ipadic.lucene.analysis.ja/g" `find . -type f | grep -v /\.svn/`
+  perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.ipadic.lucene.analysis.ja/g" `find . -type f | grep -v /\.git/`
   mkdir -p src/resources/org/codelibs/neologd
   mv src/resources/org/apache src/resources/org/codelibs/neologd/ipadic
 
@@ -198,7 +199,7 @@ bash "kuromoji-deploy" do
   code <<-EOH
   export MECAB_HOME=`pwd`/mecab_home
   export NEOLOGD_HOME=`pwd`/mecab-ipadic-neologd
-  export LUCENE_SRC_HOME=`pwd`/lucene_solr_#{lucene_version}
+  export LUCENE_SRC_HOME=`pwd`/lucene-solr
 
   NEOLOGD_VERSION=`echo $NEOLOGD_HOME/seed/mecab-user-dict-seed.*.csv.xz | sed -e "s/.*seed\\.//" -e "s/.csv.xz//"`
   NEOLOGD_LUCENE_JAR=`basename $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar |sed -e "s/-SNAPSHOT//" -e "s/\\.jar/-${NEOLOGD_VERSION}.jar/" -e "s/analyzers-kuromoji/analyzers-kuromoji-ipadic-neologd/"`

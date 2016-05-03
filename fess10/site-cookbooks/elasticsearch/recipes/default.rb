@@ -1,20 +1,38 @@
 es_version = "2.1.2"
-filename = "elasticsearch-#{es_version}.rpm"
-remote_uri = "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/#{es_version}/#{filename}"
 
 service "elasticsearch" do
     supports :status => true, :restart => true, :reload => true
 end
 
-remote_file "/tmp/#{filename}" do
-    source "#{remote_uri}"
-    mode 00644
-end
+case node['platform']
+when "ubuntu", "debian"
+  filename = "elasticsearch-#{es_version}.deb"
+  remote_uri = "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/#{es_version}/#{filename}"
 
-package "elasticsearch" do
-    action :install
-    source "/tmp/#{filename}"
-    provider Chef::Provider::Package::Rpm
+  remote_file "/tmp/#{filename}" do
+      source "#{remote_uri}"
+      mode 00644
+  end
+
+  package "elasticsearch" do
+      action :install
+      source "/tmp/#{filename}"
+      provider Chef::Provider::Package::Dpkg
+  end
+when "centos", "redhat"
+  filename = "elasticsearch-#{es_version}.rpm"
+  remote_uri = "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/#{es_version}/#{filename}"
+
+  remote_file "/tmp/#{filename}" do
+      source "#{remote_uri}"
+      mode 00644
+  end
+
+  package "elasticsearch" do
+      action :install
+      source "/tmp/#{filename}"
+      provider Chef::Provider::Package::Rpm
+  end
 end
 
 bash "update_es_yml" do
@@ -30,6 +48,7 @@ bash "update_es_yml" do
   echo 'http.cors.allow-origin: "*"' >> /tmp/elasticsearch.yml.tmp
   echo 'network.host: "0"' >> /tmp/elasticsearch.yml.tmp
   echo "configsync.config_path: /var/lib/elasticsearch/config" >> /tmp/elasticsearch.yml.tmp
+  echo "script.engine.groovy.inline.update: on" >> /tmp/elasticsearch.yml.tmp
   mv -f /tmp/elasticsearch.yml.tmp /etc/elasticsearch/elasticsearch.yml
   sed -e "s/es.logger.level: INFO/es.logger.level: DEBUG/" /etc/elasticsearch/logging.yml > /tmp/logging.yml.tmp
   mv -f /tmp/logging.yml.tmp /etc/elasticsearch/logging.yml

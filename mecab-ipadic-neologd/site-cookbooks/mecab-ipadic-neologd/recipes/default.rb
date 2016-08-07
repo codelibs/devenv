@@ -176,7 +176,7 @@ bash "kuromoji-build" do
   sed -i "s/mecab-ipadic-2.7.0-20070801/$IPADIC_VERSION/g" build.xml
   sed -i "s/euc-jp/utf-8/g" build.xml
   sed -i "s/, download-dict//g" build.xml
-  sed -i "s/1g/4g/g" build.xml
+  sed -i "s/1g/6g/g" build.xml
   sed -i "s/org\\/apache\\/lucene\\/analysis\\/ja/org\\/codelibs\\/neologd\\/ipadic\\/lucene\\/analysis\\/ja/g" build.xml
   perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.ipadic.lucene.analysis.ja/g" `find . -type f | grep -v /\.svn/`
   mkdir -p src/resources/org/codelibs/neologd

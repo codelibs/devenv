@@ -1,4 +1,4 @@
-version = '10.0.4-SNAPSHOT'
+version = '10.2.0-SNAPSHOT'
 
 service "fess" do
     supports :status => true, :restart => true, :reload => true
@@ -6,7 +6,7 @@ end
 
 case node['platform']
 when "ubuntu", "debian"
-  filename = "fess-#{version}.rpm"
+  filename = "fess-#{version}.deb"
   remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
 
   remote_file "/tmp/#{filename}" do

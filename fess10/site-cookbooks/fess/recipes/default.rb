@@ -41,12 +41,3 @@ when "centos", "redhat"
   end
 end
 
-bash "copy_plugins" do
-  user "root"
-  cwd "/tmp"
-  code <<-EOH
-  cp -r /usr/share/fess/es/plugins/* /usr/share/elasticsearch/plugins/
-  EOH
-  notifies :restart, resources(:service => "elasticsearch")
-end
-

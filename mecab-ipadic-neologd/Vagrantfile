@@ -14,6 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder "../data", "/vagrant_data"
   config.vm.synced_folder "../data/mecab-ipadic-neologd", "/opt/mecab-ipadic-neologd", :mount_options => [ "dmode=777", "fmode=777" ]
 
+  config.ssh.insert_key = false # for centos
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "8192", "--cpus", "2"]

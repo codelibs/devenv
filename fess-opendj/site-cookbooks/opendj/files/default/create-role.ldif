@@ -1,0 +1,4 @@
+dn: ou=Role,dc=fess,dc=codelibs,dc=org
+objectClass: organizationalUnit
+objectClass: top
+ou: Role

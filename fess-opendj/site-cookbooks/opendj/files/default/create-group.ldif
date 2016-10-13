@@ -1,0 +1,4 @@
+dn: ou=Group,dc=fess,dc=codelibs,dc=org
+objectClass: organizationalUnit
+objectClass: top
+ou: Group

@@ -1,0 +1,75 @@
+# testuser1, People, fess.codelibs.org
+dn: uid=testuser1,ou=People,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+sn: Testuser1
+cn: testuser1
+uid: testuser1
+userPassword: pass1234
+
+# Role1, Role, fess.codelibs.org
+dn: cn=Role1,ou=Role,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Role1
+member: uid=testuser1,ou=People,dc=fess,dc=codelibs,dc=org
+
+# Group1, Group, fess.codelibs.org
+dn: cn=Group1,ou=Group,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Group1
+member: uid=testuser1,ou=People,dc=fess,dc=codelibs,dc=org
+
+# testuser2, People, fess.codelibs.org
+dn: uid=testuser2,ou=People,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+sn: Testuser2
+cn: testuser2
+uid: testuser2
+userPassword: pass1234
+
+# Role2, Role, fess.codelibs.org
+dn: cn=Role2,ou=Role,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Role2
+member: uid=testuser2,ou=People,dc=fess,dc=codelibs,dc=org
+
+# Group2, Group, fess.codelibs.org
+dn: cn=Group2,ou=Group,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Group2
+member: uid=testuser2,ou=People,dc=fess,dc=codelibs,dc=org
+
+# testuser3, People, fess.codelibs.org
+dn: uid=testuser3,ou=People,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+sn: Testuser3
+cn: testuser3
+uid: testuser3
+userPassword: pass1234
+
+# Role3, Role, fess.codelibs.org
+dn: cn=Role3,ou=Role,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Role3
+member: uid=testuser3,ou=People,dc=fess,dc=codelibs,dc=org
+
+# Group3, Group, fess.codelibs.org
+dn: cn=Group3,ou=Group,dc=fess,dc=codelibs,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Group3
+member: uid=testuser3,ou=People,dc=fess,dc=codelibs,dc=org
+

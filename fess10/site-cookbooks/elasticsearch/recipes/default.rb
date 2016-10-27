@@ -1,4 +1,4 @@
-es_version = "2.3.5"
+es_version = "2.4.1"
 
 service "elasticsearch" do
     supports :status => true, :restart => true, :reload => true
@@ -60,14 +60,14 @@ bash "install_plugins" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-fess/2.3.0 -b
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-ja/2.3.0 -b
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-synonym/2.3.0 -b
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-configsync/2.3.1 -b
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-dataformat/2.3.0 -b
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-langfield/2.3.0 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-fess/2.4.0 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-ja/2.4.0 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-synonym/2.4.0 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-configsync/2.4.2 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-dataformat/2.4.0 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-langfield/2.4.0 -b
   /usr/share/elasticsearch/bin/plugin install http://maven.codelibs.org/archive/elasticsearch/plugin/kopf/elasticsearch-kopf-2.0.1.0.zip -b
-  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-kuromoji-neologd/2.3.1 -b
+  /usr/share/elasticsearch/bin/plugin install org.codelibs/elasticsearch-analysis-kuromoji-neologd/2.4.1 -b
   EOH
   notifies :restart, resources(:service => "elasticsearch")
 end

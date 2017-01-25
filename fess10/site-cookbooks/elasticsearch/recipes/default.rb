@@ -1,4 +1,4 @@
-es_version = "2.4.2"
+es_version = "2.4.4"
 
 service "elasticsearch" do
     supports :status => true, :restart => true, :reload => true

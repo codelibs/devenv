@@ -1,4 +1,4 @@
-version = '10.3.2-SNAPSHOT'
+version = '10.3.3-SNAPSHOT'
 
 service "fess" do
     supports :status => true, :restart => true, :reload => true

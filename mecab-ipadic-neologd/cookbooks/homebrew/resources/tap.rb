@@ -23,11 +23,13 @@ property :name,
          String,
          name_property: true,
          regex: %r{^[\w-]+(?:\/[\w-]+)+$}
+property :url, String
+property :full, [TrueClass, FalseClass], default: false
 
 action :tap do
   unless tapped?(new_resource.name)
     execute "tapping #{new_resource.name}" do
-      command "/usr/local/bin/brew tap #{new_resource.name}"
+      command "/usr/local/bin/brew tap #{full ? '--full' : ''} #{new_resource.name} #{url || ''}"
       environment lazy { { 'HOME' => ::Dir.home(Homebrew.owner), 'USER' => Homebrew.owner } }
       not_if "/usr/local/bin/brew tap | grep #{new_resource.name}"
       user Homebrew.owner
@@ -46,7 +48,7 @@ action :untap do
   end
 end
 
-action_class.class_eval do
+action_class do
   def tapped?(name)
     tap_dir = name.gsub('/', '/homebrew-')
     ::File.directory?("/usr/local/Homebrew/Library/Taps/#{tap_dir}")

@@ -4,8 +4,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "bento/centos-6.7"
-  #config.vm.box = "chef/centos-7.0"
+  config.vm.box = "ubuntu/xenial64"
+
+  config.vbguest.auto_update = true
 
   # config.vm.network :forwarded_port, guest: 80, host: 8080
   config.vm.network :forwarded_port, guest: 8080, host: 8080
@@ -13,8 +14,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder "../data", "/vagrant_data"
   config.vm.synced_folder "../data/mecab-ipadic-neologd", "/opt/mecab-ipadic-neologd", :mount_options => [ "dmode=777", "fmode=777" ]
-
-  config.ssh.insert_key = false # for centos
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "8192", "--cpus", "2"]
@@ -29,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     chef.json = {
       :java => {
         :install_flavor => "oracle",
-        :jdk_version => 7,
+        :jdk_version => 8,
         :oracle => {
           "accept_oracle_download_terms" => true
         }

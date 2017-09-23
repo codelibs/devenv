@@ -35,7 +35,7 @@ end
 
 execute "devtools" do
    user "root"
-   command 'yum -y groupinstall "Development Tools"'
+   command 'apt install -y build-essential'
    action :run
 end
 
@@ -49,8 +49,8 @@ end
 end
 
 bash "setup-resources" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export MECAB_HOME=`pwd`/mecab_home
 
@@ -66,8 +66,8 @@ bash "setup-resources" do
 end
 
 bash "mecab-build" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export MECAB_HOME=`pwd`/mecab_home
   export PATH=$MECAB_HOME/bin:$PATH
@@ -83,8 +83,8 @@ bash "mecab-build" do
 end
 
 bash "ipadic-build" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export MECAB_HOME=`pwd`/mecab_home
   export PATH=$MECAB_HOME/bin:$PATH
@@ -100,8 +100,8 @@ bash "ipadic-build" do
 end
 
 bash "neologd-build" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export MECAB_HOME=`pwd`/mecab_home
   export NEOLOGD_HOME=`pwd`/mecab-ipadic-neologd
@@ -129,8 +129,8 @@ bash "neologd-build" do
 end
 
 bash "lucene-build" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export ANT_HOME=`pwd`/apache-ant-#{ant_version}
   export LUCENE_SRC_HOME=`pwd`/lucene-solr
@@ -152,8 +152,8 @@ bash "lucene-build" do
 end
 
 bash "kuromoji-build" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export ANT_HOME=`pwd`/apache-ant-#{ant_version}
   export MECAB_HOME=`pwd`/mecab_home
@@ -194,8 +194,8 @@ bash "kuromoji-build" do
 end
 
 bash "kuromoji-deploy" do
-  user "vagrant"
-  cwd "/home/vagrant"
+  user "ubuntu"
+  cwd "/home/ubuntu"
   code <<-EOH
   export MECAB_HOME=`pwd`/mecab_home
   export NEOLOGD_HOME=`pwd`/mecab-ipadic-neologd

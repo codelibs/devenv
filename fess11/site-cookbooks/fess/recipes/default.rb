@@ -1,4 +1,4 @@
-version = '11.2.1'
+version = '11.4.2'
 
 service "fess" do
     supports :status => true, :restart => true, :reload => true
@@ -25,8 +25,8 @@ when "ubuntu", "debian"
   end
 when "centos", "redhat"
   filename = "fess-#{version}.rpm"
-  remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
-  #remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
+  #remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
+  remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
 
   remote_file "/tmp/#{filename}" do
    source "#{remote_uri}"

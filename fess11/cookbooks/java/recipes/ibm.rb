@@ -1,8 +1,8 @@
 # Author:: Joshua Timberman (<joshua@chef.io>)
-# Cookbook:: java
+# Cookbook Name:: java
 # Recipe:: ibm
 #
-# Copyright:: 2013-2015, Chef Software, Inc.
+# Copyright 2013-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,20 +18,19 @@
 
 require 'uri'
 
-include_recipe 'java::notify'
-
 source_url = node['java']['ibm']['url']
 jdk_uri = ::URI.parse(source_url)
 jdk_filename = ::File.basename(jdk_uri.path)
 
 unless valid_ibm_jdk_uri?(source_url)
-  raise "You must set the attribute `node['java']['ibm']['url']` to a valid HTTP URI"
+  fail "You must set the attribute `node['java']['ibm']['url']` to a valid HTTP URI"
 end
 
 # "installable package" installer needs rpm on Ubuntu
-package 'rpm' do
-  action :install
-  only_if { platform_family?('debian') && jdk_filename !~ /archive/ }
+if platform_family?('debian') && jdk_filename !~ /archive/
+  package 'rpm' do
+    action :install
+  end
 end
 
 template "#{Chef::Config[:file_cache_path]}/installer.properties" do
@@ -41,7 +40,7 @@ end
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{jdk_filename}" do
   source source_url
-  mode '0755'
+  mode 00755
   if node['java']['ibm']['checksum']
     checksum node['java']['ibm']['checksum']
     action :create
@@ -59,8 +58,6 @@ java_alternatives 'set-java-alternatives' do
     bin_cmds node['java']['ibm']['6']['bin_cmds']
   when '7'
     bin_cmds node['java']['ibm']['7']['bin_cmds']
-  when '8'
-    bin_cmds node['java']['ibm']['8']['bin_cmds']
   end
   action :nothing
 end
@@ -70,10 +67,8 @@ execute 'install-ibm-java' do
   environment('_JAVA_OPTIONS' => '-Dlax.debug.level=3 -Dlax.debug.all=true',
               'LAX_DEBUG' => '1')
   command "./#{jdk_filename} -f ./installer.properties -i silent"
-  creates "#{node['java']['java_home']}/jre/bin/java"
-
   notifies :set, 'java_alternatives[set-java-alternatives]', :immediately
-  notifies :write, 'log[jdk-version-changed]', :immediately
+  creates "#{node['java']['java_home']}/jre/bin/java"
 end
 
 include_recipe 'java::set_java_home'

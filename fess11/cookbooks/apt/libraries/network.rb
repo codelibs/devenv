@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: apt
-# Resource:: preference
+# library:: network
 #
-# Copyright 2010-2016, Chef Software, Inc.
+# Copyright 2013-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,15 +17,15 @@
 # limitations under the License.
 #
 
-actions :add, :remove
-default_action :add
-
-state_attrs :glob,
-            :package_name,
-            :pin,
-            :pin_priority
-
-attribute :package_name, kind_of: String, name_attribute: true, regex: [/^([a-z]|[A-Z]|[0-9]|_|-|\.|\*|\+)+$/]
-attribute :glob, kind_of: String
-attribute :pin, kind_of: String
-attribute :pin_priority, kind_of: String
+module ::Apt
+  def interface_ipaddress(host, interface)
+    if interface # rubocop: disable Style/GuardClause
+      addresses = host['network']['interfaces'][interface]['addresses']
+      addresses.select do |ip, data|
+        return ip if data['family'].eql?('inet')
+      end
+    else
+      return host.ipaddress
+    end
+  end
+end

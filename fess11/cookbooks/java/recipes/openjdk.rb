@@ -2,10 +2,10 @@
 # Author:: Seth Chisamore (<schisamo@chef.io>)
 # Author:: Joshua Timberman (<joshua@chef.io>)
 #
-# Cookbook:: java
+# Cookbook Name:: java
 # Recipe:: openjdk
 #
-# Copyright:: 2010-2015, Chef Software, Inc.
+# Copyright 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-include_recipe 'java::notify'
 
 unless node.recipe?('java::default')
   Chef::Log.warn('Using java::default instead is recommended.')
@@ -43,6 +41,7 @@ if platform_requires_license_acceptance?
 end
 
 if node['platform'] == 'ubuntu'
+  include_recipe 'apt'
   apt_repository 'openjdk-r-ppa' do
     uri 'ppa:openjdk-r'
     distribution node['lsb']['codename']
@@ -52,24 +51,24 @@ end
 node['java']['openjdk_packages'].each do |pkg|
   package pkg do
     version node['java']['openjdk_version'] if node['java']['openjdk_version']
-    notifies :write, 'log[jdk-version-changed]', :immediately
   end
 end
 
-java_alternatives 'set-java-alternatives' do
-  java_location jdk.java_home
-  default node['java']['set_default']
-  priority jdk.alternatives_priority
-  case node['java']['jdk_version'].to_s
-  when '6'
-    bin_cmds node['java']['jdk']['6']['bin_cmds']
-  when '7'
-    bin_cmds node['java']['jdk']['7']['bin_cmds']
-  when '8'
-    bin_cmds node['java']['jdk']['8']['bin_cmds']
+if platform_family?('debian', 'rhel', 'fedora')
+  java_alternatives 'set-java-alternatives' do
+    java_location jdk.java_home
+    default node['java']['set_default']
+    priority jdk.alternatives_priority
+    case node['java']['jdk_version'].to_s
+    when '6'
+      bin_cmds node['java']['jdk']['6']['bin_cmds']
+    when '7'
+      bin_cmds node['java']['jdk']['7']['bin_cmds']
+    when '8'
+      bin_cmds node['java']['jdk']['8']['bin_cmds']
+    end
+    action :set
   end
-  action :set
-  only_if { platform_family?('debian', 'rhel', 'fedora') }
 end
 
 if node['java']['set_default'] && platform_family?('debian')

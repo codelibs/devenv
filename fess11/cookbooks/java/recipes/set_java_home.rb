@@ -1,8 +1,8 @@
 # Author:: Joshua Timberman (<joshua@chef.io>)
-# Cookbook:: java
+# Cookbook Name:: java
 # Recipe:: set_java_home
 #
-# Copyright:: 2013-2015, Chef Software, Inc.
+# Copyright 2013-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,16 +16,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ruby_block 'set-env-java-home' do
+  block do
+    ENV['JAVA_HOME'] = node['java']['java_home']
+  end
+  not_if { ENV['JAVA_HOME'] == node['java']['java_home'] }
+end
+
 directory '/etc/profile.d' do
-  mode '0755'
+  mode 00755
 end
 
-template '/etc/profile.d/jdk.sh' do
-  source 'jdk.sh.erb'
-  mode '0755'
+file '/etc/profile.d/jdk.sh' do
+  content "export JAVA_HOME=#{node['java']['java_home']}"
+  mode 00755
 end
 
-if node['java']['set_etc_environment'] # ~FC023 -- Fails unit test to use guard
+if node['java']['set_etc_environment']
   ruby_block 'Set JAVA_HOME in /etc/environment' do
     block do
       file = Chef::Util::FileEdit.new('/etc/environment')

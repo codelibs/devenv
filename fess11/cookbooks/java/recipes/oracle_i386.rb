@@ -1,9 +1,9 @@
 #
 # Author:: Bryan W. Berry (<bryan.berry@gmail.com>)
-# Cookbook:: java
+# Cookbook Name:: java
 # Recipe:: oracle_i386
 #
-# Copyright:: 2010-2015, Chef Software, Inc.
+# Copyright 2010-2015, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-include_recipe 'java::notify'
 
 unless node.recipe?('java::default')
   Chef::Log.warn('Using java::default instead is recommended.')
@@ -66,7 +64,6 @@ java_ark 'jdk-alt' do
   reset_alternatives node['java']['reset_alternatives']
   action :install
   default false
-  notifies :write, 'log[jdk-version-changed]', :immediately
 end
 
 if node['java']['set_default'] && platform_family?('debian')

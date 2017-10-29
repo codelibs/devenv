@@ -1,8 +1,8 @@
 #
-# Cookbook:: apt
+# Cookbook Name:: apt
 # Recipe:: unattended-upgrades
 #
-# Copyright:: 2014-2017, Chef Software, Inc.
+# Copyright 2014-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ package 'unattended-upgrades' do
 end
 
 package 'bsd-mailx' do
-  not_if { node['apt']['unattended_upgrades']['mail'].nil? }
+  only_if { node['apt']['unattended_upgrades']['mail'] }
 end
 
 template '/etc/apt/apt.conf.d/20auto-upgrades' do

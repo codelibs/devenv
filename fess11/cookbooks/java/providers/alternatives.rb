@@ -1,5 +1,5 @@
 #
-# Cookbook:: java
+# Cookbook Name:: java
 # Provider:: alternatives
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,18 +62,20 @@ action :set do
       end
 
       # set the alternative if default
-      next unless new_resource.default
-      alternative_is_set = shell_out("#{alternatives_cmd} --display #{cmd} | grep \"link currently points to #{alt_path}\"").exitstatus == 0
-      next if alternative_is_set
-      description = "Set alternative for #{cmd}"
-      converge_by(description) do
-        Chef::Log.debug "Setting alternative for #{cmd}"
-        set_cmd = shell_out("#{alternatives_cmd} --set #{cmd} #{alt_path}")
-        unless set_cmd.exitstatus == 0
-          Chef::Application.fatal!(%( set alternative failed ))
+      if new_resource.default
+        alternative_is_set = shell_out("#{alternatives_cmd} --display #{cmd} | grep \"link currently points to #{alt_path}\"").exitstatus == 0
+        unless alternative_is_set
+          description = "Set alternative for #{cmd}"
+          converge_by(description) do
+            Chef::Log.debug "Setting alternative for #{cmd}"
+            set_cmd = shell_out("#{alternatives_cmd} --set #{cmd} #{alt_path}")
+            unless set_cmd.exitstatus == 0
+              Chef::Application.fatal!(%( set alternative failed ))
+            end
+          end
+          new_resource.updated_by_last_action(true)
         end
       end
-      new_resource.updated_by_last_action(true)
     end
   end
 end

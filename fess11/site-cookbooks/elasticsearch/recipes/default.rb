@@ -1,4 +1,5 @@
 es_version = "5.6.3"
+es_cluster_name = "elasticsearch"
 
 service "elasticsearch" do
     supports :status => true, :restart => true, :reload => true
@@ -39,15 +40,12 @@ bash "update_es_yml" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  cat /etc/elasticsearch/elasticsearch.yml > /tmp/elasticsearch.yml.tmp
-  echo "cluster.name: elasticsearch" >> /tmp/elasticsearch.yml.tmp
-  echo "node.name: \"ES Node 1\"" >> /tmp/elasticsearch.yml.tmp
-  echo "http.cors.enabled: true" >> /tmp/elasticsearch.yml.tmp
-  echo 'http.cors.allow-origin: "*"' >> /tmp/elasticsearch.yml.tmp
-  echo 'network.host: "0"' >> /tmp/elasticsearch.yml.tmp
-  echo "configsync.config_path: /var/lib/elasticsearch/config" >> /tmp/elasticsearch.yml.tmp
-  echo "script.engine.groovy.inline.update: on" >> /tmp/elasticsearch.yml.tmp
-  mv -f /tmp/elasticsearch.yml.tmp /etc/elasticsearch/elasticsearch.yml
+  echo "cluster.name: #{es_cluster_name}" > /etc/elasticsearch/elasticsearch.yml
+  echo "node.name: \"ES Node 1\"" >> /etc/elasticsearch/elasticsearch.yml
+  echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+  echo 'http.cors.allow-origin: "*"' >> /etc/elasticsearch/elasticsearch.yml
+  echo 'network.host: "0"' >> /etc/elasticsearch/elasticsearch.yml
+  echo "configsync.config_path: /var/lib/elasticsearch/config" >> /etc/elasticsearch/elasticsearch.yml
   EOH
   notifies :restart, resources(:service => "elasticsearch")
 end
@@ -56,6 +54,7 @@ bash "install_plugins" do
   user "root"
   cwd "/tmp"
   code <<-EOH
+  rm -rf /usr/share/elasticsearch/plugins
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:5.6.1 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-ja:5.6.1 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-synonym:5.6.1 -b

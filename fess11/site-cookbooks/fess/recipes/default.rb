@@ -1,4 +1,4 @@
-version = '11.4.2'
+version = '11.4.6'
 
 service "fess" do
     supports :status => true, :restart => true, :reload => true

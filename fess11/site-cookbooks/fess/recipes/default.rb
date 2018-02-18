@@ -1,4 +1,4 @@
-version = '11.4.6'
+version = '11.4.9-SNAPSHOT'
 
 service "fess" do
     supports :status => true, :restart => true, :reload => true
@@ -7,8 +7,8 @@ end
 case node['platform']
 when "ubuntu", "debian"
   filename = "fess-#{version}.deb"
-  #remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
-  remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
+  remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
+  #remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
 
   remote_file "/tmp/#{filename}" do
    source "#{remote_uri}"
@@ -25,8 +25,8 @@ when "ubuntu", "debian"
   end
 when "centos", "redhat"
   filename = "fess-#{version}.rpm"
-  #remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
-  remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
+  remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
+  #remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
 
   remote_file "/tmp/#{filename}" do
    source "#{remote_uri}"

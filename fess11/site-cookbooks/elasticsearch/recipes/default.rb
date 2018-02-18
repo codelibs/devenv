@@ -1,4 +1,4 @@
-es_version = "5.6.3"
+es_version = "5.6.7"
 es_cluster_name = "elasticsearch"
 
 service "elasticsearch" do
@@ -36,11 +36,21 @@ when "centos", "redhat"
   end
 end
 
+bash 'copy_es_yml' do
+  user "root"
+  cwd "/etc/elasticsearch"
+  code <<-EOH
+    cp /etc/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml.orig
+  EOH
+  not_if { ::File.exist?("/etc/elasticsearch/elasticsearch.yml.orig") }
+end
+
 bash "update_es_yml" do
   user "root"
   cwd "/tmp"
   code <<-EOH
-  echo "cluster.name: #{es_cluster_name}" > /etc/elasticsearch/elasticsearch.yml
+  cat /etc/elasticsearch/elasticsearch.yml.orig > /etc/elasticsearch/elasticsearch.yml
+  echo "cluster.name: #{es_cluster_name}" >> /etc/elasticsearch/elasticsearch.yml
   echo "node.name: \"ES Node 1\"" >> /etc/elasticsearch/elasticsearch.yml
   echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
   echo 'http.cors.allow-origin: "*"' >> /etc/elasticsearch/elasticsearch.yml
@@ -55,11 +65,12 @@ bash "install_plugins" do
   cwd "/tmp"
   code <<-EOH
   rm -rf /usr/share/elasticsearch/plugins
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:5.6.1 -b
+  mkdir /usr/share/elasticsearch/plugins
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:5.6.2 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-ja:5.6.1 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-synonym:5.6.1 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-configsync:5.6.1 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-dataformat:5.6.1 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-dataformat:5.6.2 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-langfield:5.6.1 -b
   /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-minhash:5.6.1 -b
   EOH

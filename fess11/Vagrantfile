@@ -25,20 +25,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = :latest
 
   config.vm.provision :chef_solo do |chef|
-    chef.cookbooks_path = ["cookbooks", "site-cookbooks"]
+    chef.cookbooks_path = ["site-cookbooks"]
     chef.add_recipe "java"
     chef.add_recipe "elasticsearch"
     chef.add_recipe "fess"
     chef.add_recipe "testdata"
-    chef.json = {
-      :java => {
-        :install_flavor => "oracle",
-        :jdk_version => 8,
-        :oracle => {
-          "accept_oracle_download_terms" => true
-        }
-      }
-    }
   end
 
 end

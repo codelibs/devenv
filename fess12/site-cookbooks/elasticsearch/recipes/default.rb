@@ -1,4 +1,4 @@
-es_version = "6.1.1"
+es_version = "6.2.2"
 es_cluster_name = "elasticsearch"
 
 service "elasticsearch" do
@@ -66,13 +66,14 @@ bash "install_plugins" do
   code <<-EOH
   rm -rf /usr/share/elasticsearch/plugins
   mkdir /usr/share/elasticsearch/plugins
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:6.1.0 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-ja:6.1.0 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-synonym:6.1.0 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-configsync:6.1.1 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-dataformat:6.1.0 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-langfield:6.1.0 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-minhash:6.1.0 -b
+  #/usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:6.2.1 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-ja:6.2.1 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-synonym:6.2.1 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-configsync:6.2.2 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-dataformat:6.2.2 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-langfield:6.2.1 -b
+  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-minhash:6.2.1 -b
   EOH
   notifies :restart, resources(:service => "elasticsearch")
 end

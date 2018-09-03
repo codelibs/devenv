@@ -1,10 +1,7 @@
 #es_version = "6.1.3"
-es_version = "6.2.2"
+#es_version = "6.2.2"
+es_version = "6.4.0"
 es_cluster_name = "elasticsearch"
-
-service "elasticsearch" do
-    supports :status => true, :restart => true, :reload => true
-end
 
 case node['platform']
 when "ubuntu", "debian"
@@ -58,32 +55,5 @@ bash "update_es_yml" do
   echo 'network.host: "0"' >> /etc/elasticsearch/elasticsearch.yml
   echo "configsync.config_path: /var/lib/elasticsearch/config" >> /etc/elasticsearch/elasticsearch.yml
   EOH
-  notifies :restart, resources(:service => "elasticsearch")
-end
-
-bash "install_plugins" do
-  user "root"
-  cwd "/tmp"
-  code <<-EOH
-  rm -rf /usr/share/elasticsearch/plugins
-  mkdir /usr/share/elasticsearch/plugins
-  #/usr/share/elasticsearch/bin/elasticsearch-plugin install x-pack -b
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:6.2.1
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-ja:6.2.1
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-synonym:6.2.1
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-configsync:6.2.3
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-dataformat:6.2.2
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-langfield:6.2.1
-#  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-minhash:6.2.1
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-fess:6.2.1 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-ja:6.2.1 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-analysis-synonym:6.2.1 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-configsync:6.2.3 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-dataformat:6.2.2 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-langfield:6.2.1 -b
-  /usr/share/elasticsearch/bin/elasticsearch-plugin install org.codelibs:elasticsearch-minhash:6.2.1 -b
-
-  EOH
-  notifies :restart, resources(:service => "elasticsearch")
 end
 

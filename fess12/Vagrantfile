@@ -3,9 +3,17 @@
 
 VAGRANTFILE_API_VERSION = "2"
 
+class CentOsInstallers < VagrantVbguest::Installers::RedHat
+  def install(opts=nil, &block)
+    communicate.sudo('yum -y install https://rpmfind.net/linux/centos/7.4.1708/updates/x86_64/Packages/kernel-devel-3.10.0-693.21.1.el7.x86_64.rpm', opts, &block)
+    super
+  end
+end
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.vm.box = "centos/6"
   config.vm.box = "centos/7"
+  #config.vbguest.installer = CentOsInstallers
   #config.vm.box = "ubuntu/trusty64"
   #config.vm.box = "ubuntu/xenial64"
 

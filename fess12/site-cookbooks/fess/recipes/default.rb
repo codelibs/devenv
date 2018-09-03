@@ -1,6 +1,12 @@
 #version = '12.0.3-SNAPSHOT'
-version = '12.1.2-SNAPSHOT'
+#version = '12.1.2-SNAPSHOT'
 #version = '12.2.0-SNAPSHOT'
+version = '12.3.0-SNAPSHOT'
+es_version = '6.4.0'
+
+service "elasticsearch" do
+    supports :status => true, :restart => true, :reload => true
+end
 
 service "fess" do
     supports :status => true, :restart => true, :reload => true
@@ -51,5 +57,21 @@ when "centos", "redhat"
   package "unoconv" do
    action :install
   end
+end
+
+package "ant" do
+    action :install
+end
+
+bash "install_plugins" do
+  user "root"
+  cwd "/tmp"
+  code <<-EOH
+  rm -rf /usr/share/elasticsearch/plugins
+  mkdir /usr/share/elasticsearch/plugins
+  ant -f /usr/share/fess/bin/plugin.xml -Dtarget.dir=/tmp -Dplugins.dir=/usr/share/elasticsearch/plugins -Delasticsearch.version=#{es_version} install.plugins
+
+  EOH
+  notifies :restart, resources(:service => "elasticsearch")
 end
 

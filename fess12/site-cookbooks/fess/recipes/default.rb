@@ -28,7 +28,6 @@ when "ubuntu", "debian"
    source "/tmp/#{filename}"
    options "--force-depends"
    provider Chef::Provider::Package::Dpkg
-   notifies :restart, resources(:service => "fess")
    notifies :enable, resources(:service => "fess")
   end
 when "centos", "redhat"
@@ -46,7 +45,6 @@ when "centos", "redhat"
    source "/tmp/#{filename}"
    options "--nodeps"
    provider Chef::Provider::Package::Rpm
-   notifies :restart, resources(:service => "fess")
    notifies :enable, resources(:service => "fess")
   end
 
@@ -73,5 +71,6 @@ bash "install_plugins" do
 
   EOH
   notifies :restart, resources(:service => "elasticsearch")
+  notifies :restart, resources(:service => "fess")
 end
 

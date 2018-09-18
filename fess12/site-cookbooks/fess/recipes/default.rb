@@ -30,6 +30,8 @@ when "ubuntu", "debian"
    provider Chef::Provider::Package::Dpkg
    notifies :enable, resources(:service => "fess")
   end
+
+  apt_update 'update'
 when "centos", "redhat"
   filename = "fess-#{version}.rpm"
   remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"

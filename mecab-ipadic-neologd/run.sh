@@ -149,7 +149,7 @@ kuromoji_deploy() {
 
   NEOLOGD_VERSION=`echo $NEOLOGD_HOME/seed/mecab-user-dict-seed.*.csv.xz | sed -e "s/.*seed\\.//" -e "s/.csv.xz//"`
   NEOLOGD_LUCENE_JAR=`basename $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar |sed -e "s/-SNAPSHOT//" -e "s/\\.jar/-${NEOLOGD_VERSION}.jar/" -e "s/analyzers-kuromoji/analyzers-kuromoji-ipadic-neologd/"`
-  cp $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar /data/$NEOLOGD_LUCENE_JAR
+  cp $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar /data/mecab-ipadic-neologd/$NEOLOGD_LUCENE_JAR
 }
 
 setup_resources

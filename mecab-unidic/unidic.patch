@@ -1,0 +1,67 @@
+diff --git a/lucene/analysis/kuromoji/src/java/org/apache/lucene/analysis/ja/dict/BinaryDictionary.java b/lucene/analysis/kuromoji/src/java/org/apache/lucene/analysis/ja/dict/BinaryDictionary.java
+index 180c0a9327..3ddc6adad8 100644
+--- a/lucene/analysis/kuromoji/src/java/org/apache/lucene/analysis/ja/dict/BinaryDictionary.java
++++ b/lucene/analysis/kuromoji/src/java/org/apache/lucene/analysis/ja/dict/BinaryDictionary.java
+@@ -155,12 +155,12 @@ public abstract class BinaryDictionary implements Dictionary {
+   
+   @Override
+   public int getLeftId(int wordId) {
+-    return buffer.getShort(wordId) >>> 3;
++    return (buffer.getShort(wordId) & 0xffff) >>> 3;
+   }
+   
+   @Override
+   public int getRightId(int wordId) {
+-    return buffer.getShort(wordId) >>> 3;
++    return (buffer.getShort(wordId) & 0xffff) >>> 3;
+   }
+   
+   @Override
+diff --git a/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/BinaryDictionaryWriter.java b/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/BinaryDictionaryWriter.java
+index a6d48cc8bb..3cc8add124 100644
+--- a/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/BinaryDictionaryWriter.java
++++ b/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/BinaryDictionaryWriter.java
+@@ -111,7 +111,7 @@ public abstract class BinaryDictionaryWriter {
+     }
+ 
+     assert leftId == rightId;
+-    assert leftId < 4096; // there are still unused bits
++    assert leftId < 8192; // there are still unused bits
+     // add pos mapping
+     int toFill = 1+leftId - posDict.size();
+     for (int i = 0; i < toFill; i++) {
+diff --git a/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/TokenInfoDictionaryBuilder.java b/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/TokenInfoDictionaryBuilder.java
+index 1b8abbba64..1036f82098 100644
+--- a/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/TokenInfoDictionaryBuilder.java
++++ b/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/TokenInfoDictionaryBuilder.java
+@@ -210,7 +210,7 @@ public class TokenInfoDictionaryBuilder {
+       features2[7] = features[7];
+       features2[8] = features[8];
+       features2[9] = features[9];
+-      features2[10] = features[11];
++      features2[10] = features[14];
+       
+       // If the surface reading is non-existent, use surface form for reading and pronunciation.
+       // This happens with punctuation in UniDic and there are possibly other cases as well
+diff --git a/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/UnknownDictionaryBuilder.java b/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/UnknownDictionaryBuilder.java
+index f4b7e1376b..c9acef0107 100644
+--- a/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/UnknownDictionaryBuilder.java
++++ b/lucene/analysis/kuromoji/src/tools/java/org/apache/lucene/analysis/ja/util/UnknownDictionaryBuilder.java
+@@ -33,7 +33,7 @@ import java.util.List;
+ import org.apache.lucene.analysis.ja.dict.CharacterDefinition;
+ 
+ public class UnknownDictionaryBuilder {
+-  private static final String NGRAM_DICTIONARY_ENTRY = "NGRAM,5,5,-32768,記号,一般,*,*,*,*,*,*,*";
++  private static final String NGRAM_DICTIONARY_ENTRY = "NGRAM,5,5,-32768,記号,一般,*,*,*,*,*,*,*,*";
+   
+   private String encoding = "euc-jp";
+   
+@@ -71,7 +71,7 @@ public class UnknownDictionaryBuilder {
+     while ((line = lineReader.readLine()) != null) {
+       // note: unk.def only has 10 fields, it simplifies the writer to just append empty reading and pronunciation,
+       // even though the unknown dictionary returns hardcoded null here.
+-      final String[] parsed = CSVUtil.parse(line + ",*,*"); // Probably we don't need to validate entry
++      final String[] parsed = CSVUtil.parse(line + ",*,*,*"); // Probably we don't need to validate entry
+       lines.add(parsed);
+     }
+     

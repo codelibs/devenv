@@ -3,24 +3,24 @@
 ## Build Docker Image
 
 ```
-docker build --rm -t codelibs/neologd-build .
+docker build --rm -t codelibs/ipadic-neologd-build .
 ```
 
 ## Run Docker Image
 
 ```
-docker run -t --rm -v `readlink -f ../data/`:/data/ codelibs/neologd-build:latest
+docker run -t --rm -v `readlink -f ../data/`:/data/ codelibs/ipadic-neologd-build:latest
 ```
 
 ### Push Latest Image
 
 ```
-docker push codelibs/neologd-build:latest
+docker push codelibs/ipadic-neologd-build:latest
 ```
 
 ### Push Release Images
 
 ```
-docker tag codelibs/neologd-build codelibs/neologd-build:1.0.0
-docker push codelibs/neologd-build:1.0.0
+docker tag codelibs/ipadic-neologd-build codelibs/ipadic-neologd-build:1.0.0
+docker push codelibs/ipadic-neologd-build:1.0.0
 ```

@@ -114,6 +114,7 @@ kuromoji_build() {
   perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.unidic.lucene.analysis.ja/g" `find . -type f | grep -v /\.git/`
   mkdir -p src/resources/org/codelibs
   mv src/resources/org/apache src/resources/org/codelibs/unidic
+  rm `find src/ -type f|grep package-info.java`
 
   ant regenerate
   if [ $? != 0 ] ; then exit 1;fi

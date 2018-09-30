@@ -59,7 +59,7 @@ unidic_build() {
   export PATH=$MECAB_HOME/bin:$PATH
   export UNIDIC_HOME=`pwd`/unidic-mecab-${unidic_version}_src
 
-  pushd $UNIDIC_HOJME
+  pushd $UNIDIC_HOME
   ./configure
   make
   make install

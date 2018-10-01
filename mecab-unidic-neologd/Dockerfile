@@ -10,5 +10,6 @@ WORKDIR /work
 
 COPY run.sh /work/run.sh
 COPY unidic.patch /work/unidic.patch
+COPY fix_range.py /work/fix_range.py
 CMD ["/bin/bash", "-x", "run.sh"]
 

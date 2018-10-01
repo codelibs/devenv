@@ -59,8 +59,9 @@ mecab_build() {
 unidic_build() {
   export MECAB_HOME=`pwd`/mecab_home
   export PATH=$MECAB_HOME/bin:$PATH
+  export UNIDIC_HOME=`pwd`/unidic-mecab-${unidic_version}_src
 
-  pushd unidic-mecab-${unidic_version}_src
+  pushd $UNIDIC_HOME
   ./configure 
   make
   make install
@@ -112,6 +113,7 @@ kuromoji_build() {
   export MECAB_HOME=`pwd`/mecab_home
   export NEOLOGD_HOME=`pwd`/mecab-unidic-neologd
   export LUCENE_SRC_HOME=`pwd`/lucene-solr
+  export UNIDIC_HOME=`pwd`/unidic-mecab-${unidic_version}_src
 
   export PATH=$ANT_HOME/bin:$PATH
   export PATH=$MECAB_HOME/bin:$PATH
@@ -139,6 +141,12 @@ kuromoji_build() {
   perl -pi -e "s/org\\.apache\\.lucene\\.analysis\\.ja/org.codelibs.neologd.unidic.lucene.analysis.ja/g" `find . -type f | grep -v /\.git/`
   mkdir -p src/resources/org/codelibs/neologd
   mv src/resources/org/apache src/resources/org/codelibs/neologd/unidic
+  rm `find src/ -type f|grep package-info.java`
+
+  SEED_FILE=`ls ../../build/analysis/kuromoji/unidic-mecab-*_src-neologd-*/mecab-unidic-user-dict-seed.*.csv`
+  SEED_TMP_FILE=/tmp/seed.csv.$$
+  python /work/fix_range.py $SEED_FILE $SEED_TMP_FILE
+  cp $SEED_TMP_FILE $SEED_FILE
 
   ant regenerate
   if [ $? != 0 ] ; then exit 1;fi
@@ -152,7 +160,7 @@ kuromoji_deploy() {
   export NEOLOGD_HOME=`pwd`/mecab-unidic-neologd
   export LUCENE_SRC_HOME=`pwd`/lucene-solr
 
-  NEOLOGD_VERSION=`echo $NEOLOGD_HOME/seed/mecab-user-dict-seed.*.csv.xz | sed -e "s/.*seed\\.//" -e "s/.csv.xz//"`
+  NEOLOGD_VERSION=`echo $NEOLOGD_HOME/seed/mecab-unidic-user-dict-seed.*.csv.xz | sed -e "s/.*seed\\.//" -e "s/.csv.xz//"`
   NEOLOGD_LUCENE_JAR=`basename $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar |sed -e "s/-SNAPSHOT//" -e "s/\\.jar/-${NEOLOGD_VERSION}.jar/" -e "s/analyzers-kuromoji/analyzers-kuromoji-unidic-neologd/"`
   cp $LUCENE_SRC_HOME/lucene/build/analysis/kuromoji/lucene-analyzers-kuromoji-*.jar /data/mecab-unidic-neologd/$NEOLOGD_LUCENE_JAR
 }

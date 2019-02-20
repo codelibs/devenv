@@ -17,11 +17,11 @@ if [ x"$max_baseform_length" = "x" ] ; then
 fi
 
 ant_file="apache-ant-${ant_version}-bin.tar.gz"
-ant_url="http://maven.codelibs.org/archive/ant/${ant_version}/${ant_file}"
+ant_url="https://maven.codelibs.org/archive/ant/${ant_version}/${ant_file}"
 mecab_file="mecab-${mecab_version}.tar.gz"
-mecab_url="http://maven.codelibs.org/archive/mecab/${mecab_file}"
+mecab_url="https://maven.codelibs.org/archive/mecab/${mecab_file}"
 ipadic_file="mecab-ipadic-${ipadic_version}.tar.gz"
-ipadic_url="http://maven.codelibs.org/archive/mecab/${ipadic_file}"
+ipadic_url="https://maven.codelibs.org/archive/mecab/${ipadic_file}"
 neologd_git_url="https://github.com/neologd/mecab-ipadic-neologd.git"
 lucene_git_url="https://github.com/apache/lucene-solr.git"
 resource_process_file="/tmp/resouce_process.txt"

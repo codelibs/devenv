@@ -1,6 +1,6 @@
 version = '4.0.0_M1'
 filename = "opendj-#{version}-1.noarch.rpm"
-remote_uri = "http://maven.codelibs.org/archive/opendj/#{version}/#{filename}"
+remote_uri = "https://maven.codelibs.org/archive/opendj/#{version}/#{filename}"
 setup_done_file = "/opt/setup/.opendj_done"
 
 package "openldap-clients" do

@@ -99,7 +99,11 @@ lucene_build() {
   rm -rf $LUCENE_SRC_HOME
   git clone ${lucene_git_url}
   pushd $LUCENE_SRC_HOME
-  git checkout -b ${lucene_version} refs/tags/releases/lucene-solr/${lucene_version}
+  if [ x"$lucene_commit" = "x" ] ; then
+    git checkout -b ${lucene_version} refs/tags/releases/lucene-solr/${lucene_version}
+  else
+    git checkout -b ${lucene_version} ${lucene_commit}
+  fi
   cd lucene
   ant ivy-bootstrap
   ant compile

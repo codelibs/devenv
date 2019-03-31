@@ -1,4 +1,4 @@
-jdk_version = "8"
+jdk_version = "11"
 
 case node['platform']
 when "ubuntu", "debian"
@@ -7,16 +7,16 @@ when "ubuntu", "debian"
     apt_package 'openjdk-8-jdk' do
       action :install
     end
-  when "9"
-    apt_package 'openjdk-9-jdk' do
+  when "11"
+    apt_package 'openjdk-11-jdk' do
       action :install
       options '-o Dpkg::Options::="--force-overwrite"'
     end
-    bash 'use_java9' do
+    bash 'use_java11' do
       user 'root'
       cwd '/tmp'
       code <<-EOH
-      update-alternatives --set java /usr/lib/jvm/java-9-openjdk-amd64/bin/java
+      update-alternatives --set java /usr/lib/jvm/java-11-openjdk-amd64/bin/java
       EOH
     end
   end
@@ -26,17 +26,17 @@ when "centos", "redhat"
     yum_package 'java-1.8.0-openjdk' do
       action :install
     end
-  when "9"
-    bash 'use_java9' do
+  when "11"
+    bash 'use_java11' do
       user 'root'
       cwd '/tmp'
       code <<-EOH
-      curl -o openjdk-9.tar.gz https://download.java.net/java/GA/jdk9/9.0.4/binaries/openjdk-9.0.4_linux-x64_bin.tar.gz
-      tar xzvf openjdk-9.tar.gz
+      curl -L -o openjdk-11.tar.gz "https://api.adoptopenjdk.net/v2/binary/releases/openjdk11?openjdk_impl=hotspot&os=linux&arch=x64&release=latest&type=jdk"
+      tar xzvf openjdk-11.tar.gz
       mkdir -p /usr/lib/jvm
-      mv jdk-9.0.4 /usr/lib/jvm
-      alternatives --install /usr/bin/java java `ls /usr/lib/jvm/jdk-9*/bin/java` 1
-      alternatives --set java `ls /usr/lib/jvm/jdk-9*/bin/java`
+      mv jdk-11* /usr/lib/jvm
+      alternatives --install /usr/bin/java java `ls /usr/lib/jvm/jdk-11*/bin/java` 1
+      alternatives --set java `ls /usr/lib/jvm/jdk-11*/bin/java`
       EOH
     end
   end

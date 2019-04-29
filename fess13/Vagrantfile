@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+class CentOsInstallers < VagrantVbguest::Installers::RedHat
+  def install(opts=nil, &block)
+    communicate.sudo('yum -y install https://rpmfind.net/linux/centos/7.4.1708/updates/x86_64/Packages/kernel-devel-3.10.0-693.21.1.el7.x86_64.rpm', opts, &block)
+    super
+  end
+end
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  #config.vm.box = "centos/6"
+  config.vm.box = "centos/7"
+  #config.vbguest.installer = CentOsInstallers
+  #config.vm.box = "ubuntu/trusty64"
+  #config.vm.box = "ubuntu/xenial64"
+
+  config.ssh.insert_key = false # for centos
+  config.vbguest.auto_update = true
+
+  config.vm.network :forwarded_port, guest: 8000, host: 8000
+  config.vm.network :forwarded_port, guest: 8080, host: 8080
+  config.vm.network :forwarded_port, guest: 9200, host: 9200
+
+  config.vm.synced_folder "../data", "/vagrant_data"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+  end
+
+  config.omnibus.chef_version = :latest
+
+  config.vm.provision :chef_solo do |chef|
+    chef.cookbooks_path = ["site-cookbooks"]
+    chef.add_recipe "java"
+    chef.add_recipe "elasticsearch"
+    chef.add_recipe "fess"
+    chef.add_recipe "testdata"
+  end
+
+end

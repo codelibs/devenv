@@ -12,12 +12,12 @@ end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.vm.box = "centos/6"
-  config.vm.box = "centos/7"
+  #config.vm.box = "centos/7"
   #config.vbguest.installer = CentOsInstallers
   #config.vm.box = "ubuntu/trusty64"
-  #config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/xenial64"
 
-  config.ssh.insert_key = false # for centos
+  #config.ssh.insert_key = false # for centos
   config.vbguest.auto_update = true
 
   config.vm.network :forwarded_port, guest: 8000, host: 8000
@@ -33,6 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = :latest
 
   config.vm.provision :chef_solo do |chef|
+    chef.arguments = "--chef-license accept"
     chef.cookbooks_path = ["site-cookbooks"]
     chef.add_recipe "java"
     chef.add_recipe "elasticsearch"

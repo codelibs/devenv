@@ -2,7 +2,7 @@
 #es_version = "6.2.2"
 #es_version = "6.5.4"
 #es_version = "6.6.2"
-es_version = "6.7.0"
+es_version = "6.7.2"
 es_cluster_name = "elasticsearch"
 
 case node['platform']

@@ -1,4 +1,4 @@
-jdk_version = "11"
+jdk_version = "8"
 
 case node['platform']
 when "ubuntu", "debian"

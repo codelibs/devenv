@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = :latest
 
   config.vm.provision :chef_solo do |chef|
+    chef.arguments = "--chef-license accept"
     chef.cookbooks_path = ["site-cookbooks"]
     chef.add_recipe "java"
     chef.add_recipe "elasticsearch"

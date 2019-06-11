@@ -3,7 +3,7 @@
 #version = '12.2.0-SNAPSHOT'
 #version = '12.4.4-SNAPSHOT'
 #version = '12.5.2-SNAPSHOT'
-version = '12.6.1'
+version = '12.6.2-SNAPSHOT'
 es_version = '6.7.2'
 
 service "elasticsearch" do
@@ -17,8 +17,8 @@ end
 case node['platform']
 when "ubuntu", "debian"
   filename = "fess-#{version}.deb"
-  #remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
-  remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
+  remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
+  #remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
 
   remote_file "/tmp/#{filename}" do
    source "#{remote_uri}"
@@ -36,8 +36,8 @@ when "ubuntu", "debian"
   apt_update 'update'
 when "centos", "redhat"
   filename = "fess-#{version}.rpm"
-  #remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
-  remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
+  remote_uri = "http://fess.codelibs.org/snapshot/#{filename}"
+  #remote_uri = "https://github.com/codelibs/fess/releases/download/fess-#{version}/#{filename}"
 
   remote_file "/tmp/#{filename}" do
    source "#{remote_uri}"

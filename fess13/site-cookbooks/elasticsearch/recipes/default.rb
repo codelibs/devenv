@@ -1,4 +1,4 @@
-es_version = "7.4.0"
+es_version = "7.5.1"
 es_cluster_name = "elasticsearch"
 
 case node['platform']

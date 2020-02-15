@@ -1,5 +1,5 @@
-version = '13.5.0-SNAPSHOT'
-es_version = '7.5.1'
+version = '13.6.0-SNAPSHOT'
+es_version = '7.6.0'
 
 service "elasticsearch" do
     supports :status => true, :restart => true, :reload => true
@@ -53,6 +53,16 @@ when "centos", "redhat"
 
   package "unoconv" do
    action :install
+  end
+
+  bash "disable_firewall" do
+    user "root"
+    cwd "/tmp"
+    code <<-EOH
+    firewall-cmd --add-port=9200/tcp --permanent
+    firewall-cmd --add-port=8080/tcp --permanent
+    firewall-cmd --reload
+    EOH
   end
 end
 

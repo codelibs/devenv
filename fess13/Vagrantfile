@@ -11,13 +11,13 @@ VAGRANTFILE_API_VERSION = "2"
 #end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  #config.vm.box = "centos/6"
-  config.vm.box = "centos/7"
+  #config.vm.box = "centos/7"
+  config.vm.box = "generic/centos8"
   #config.vbguest.installer = CentOsInstallers
   #config.vm.box = "ubuntu/trusty64"
   #config.vm.box = "ubuntu/xenial64"
 
-  config.ssh.insert_key = false # for centos
+  #config.ssh.insert_key = false # for centos 7
   config.vbguest.auto_update = true
   config.disksize.size = '50GB'
 

@@ -1,5 +1,5 @@
-version = '13.6.0-SNAPSHOT'
-es_version = '7.6.0'
+version = '13.6.2-SNAPSHOT'
+es_version = '7.6.1'
 
 service "elasticsearch" do
     supports :status => true, :restart => true, :reload => true
